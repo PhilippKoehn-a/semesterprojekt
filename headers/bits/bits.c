@@ -134,7 +134,7 @@ int exactly_representable(double number)
         decimal_into_binary(number, p);
         proof = binary_into_decimal(p);
 
-        if (proof == number)
+        if (proof == number || proof - number < fabs(EPSILON))
         {
                 return 1;
         }
@@ -142,4 +142,70 @@ int exactly_representable(double number)
         {
                 return 0;
         }
+}
+
+char *get_fraction(char *bitfield)
+{
+        char *p;
+        int i, unused_bits;
+        i = 0;
+        unused_bits = 0;
+        while (*(bitfield + MAX_BINARY_LENGTH - 1 - i) == '0')
+        {
+                ++i;
+                ++unused_bits;
+        }
+        unused_bits = 32 - unused_bits;
+
+        p = malloc(unused_bits * sizeof(char));
+        if (p == NULL)
+        {
+                ALLOCATION_ERROR_MESSAGE();
+                return NULL;
+        }
+
+        for (i = 0; i < unused_bits; ++i)
+        {
+                *(p + i) = *(bitfield + 32 + i);
+        }
+
+        return p;
+}
+
+char *get_pre_decimal(char *bitfield)
+{
+        char *p;
+        int i, unused_bits;
+        unused_bits = 0;
+        i = 0;
+        while (*(bitfield) == '0')
+        {
+                ++bitfield;
+                ++unused_bits;
+        }
+        --bitfield; /*respecting pre-sign bit*/
+        unused_bits = 32 - unused_bits;
+
+        p = malloc((unused_bits) * sizeof(char));
+        if (p == NULL)
+        {
+                ALLOCATION_ERROR_MESSAGE();
+                return NULL;
+        }
+
+        bitfield = bitfield - unused_bits;
+
+        for (i = 0; i < unused_bits; ++i)
+        {
+                if (*(bitfield + unused_bits + i) == '.')
+                {
+                        break;
+                }
+                else
+                {
+                        *(p + i) = *(bitfield + unused_bits + i);
+                }
+        }
+
+        return p;
 }

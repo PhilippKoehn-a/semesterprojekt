@@ -1,15 +1,16 @@
 #ifndef BITS_H_INCLUDED
 #define BITS_H_INCLUDED
 
+#define ALLOCATION_ERROR -99
+#define EPSILON 0.0000001
 #define EXTENSION_ERROR -10
 #define GENERAL_ERROR -9999
-#define ALLOCATION_ERROR -99
 #define INVALID_INPUT -5
 #define MAX_BINARY_LENGTH 64
 
+#define ALLOCATION_ERROR_MESSAGE() printf("Fehlercode: -99\n");
 #define EXTENSION_ERROR_MESSAGE() printf("Fehlercode: -10\n");
 #define GENERAL_ERROR_MESSAGE() printf("Fehlercode: -9999\n");
-#define ALLOCATION_ERROR_MESSAGE() printf("Fehlercode: -99\n");
 #define INVALID_INPUT_MESSAGE() printf("Fehlercode: -5\n");
 #define PRINT_BINARY(x)                          \
         for (i = 0; i <= MAX_BINARY_LENGTH; ++i) \
@@ -27,4 +28,9 @@ double binary_into_decimal(char *bitfield);
 char *initialize_bitfield();
 /*Calculates, if a given decimal number is exactly representable as a binary digit. Returns boolean value as result.*/
 int exactly_representable(double number);
+/*Selects all fractional places of a given bitfield. Returns a pointer. Cuts off al the unused bitplaces in the bitfield.*/
+char *get_fraction(char *bitfield);
+/*Returns a pointer on a reserved memory in heap which contains the number from bitfield without fractions. Cuts off al the unused bitplaces in the bitfield. Resprcts the pre-sign bit.*/
+char *get_pre_decimal(char *bitfield);
+
 #endif
