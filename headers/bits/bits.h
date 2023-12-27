@@ -32,5 +32,7 @@ int exactly_representable(double number);
 char *get_fraction(char *bitfield);
 /*Returns a pointer on a reserved memory in heap which contains the number from bitfield without fractions. Cuts off al the unused bitplaces in the bitfield. Respects the pre-sign bit.*/
 char *get_pre_decimal(char *bitfield);
+/*Returns a pointer on a reserved memory in heap which contains the number from bitfield without fractions. Cuts off al the unused bitplaces in the bitfield. Does not respect the pre-sign bit.*/
+char *get_pre_decimal_pure(char *bitfield);
 
 #endif

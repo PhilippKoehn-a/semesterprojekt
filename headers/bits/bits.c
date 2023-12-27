@@ -209,3 +209,41 @@ char *get_pre_decimal(char *bitfield)
 
         return p;
 }
+
+char *get_pre_decimal_pure(char *bitfield)
+{
+        char *p;
+        int i, unused_bits;
+        unused_bits = 0;
+        i = 0;
+        while (*(bitfield) == '0')
+        {
+                ++bitfield;
+                ++unused_bits;
+        }
+
+        unused_bits = 32 - unused_bits;
+
+        p = malloc((unused_bits) * sizeof(char));
+        if (p == NULL)
+        {
+                ALLOCATION_ERROR_MESSAGE();
+                return NULL;
+        }
+
+        bitfield = bitfield - unused_bits;
+
+        for (i = 0; i < unused_bits; ++i)
+        {
+                if (*(bitfield + unused_bits + i) == '.')
+                {
+                        break;
+                }
+                else
+                {
+                        *(p + i) = *(bitfield + unused_bits + i);
+                }
+        }
+
+        return p;
+}
