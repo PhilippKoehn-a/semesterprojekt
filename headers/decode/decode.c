@@ -1,5 +1,4 @@
 #include "bits.h"
-#include "encode.h"
 #include "decode.h"
 #include <math.h>
 #include <stdio.h>
