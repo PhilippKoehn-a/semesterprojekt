@@ -19,7 +19,7 @@ char *exzess_q(int number, int bits)
         q = pow(2, bits - 1) - 1;
         number = number + q;
         decimal_into_binary(number, p);
-        a = get_pre_decimal(p);
+        a = get_pre_decimal_pure(p);
         if ((int)strlen(a) - 2 > bits)
         {
                 MISSING_BIT_ERROR_MESSAGE();
@@ -35,7 +35,7 @@ char *fixed_point(double number, int after_coma, int bits)
 {
         int i;
         char *p = initialize_bitfield();
-        char *a = malloc((bits) * sizeof(char));
+        char *a = malloc((bits + 1) * sizeof(char));
         char *temp;
 
         if (number < 0)
@@ -92,11 +92,6 @@ char *fixed_point(double number, int after_coma, int bits)
                         }
                         *a = '0';
                 }
-        }
-        if (binary_into_decimal(a) != number) /*check, if the encoding was possible with the given amount of bits*/
-        {
-                MISSING_BIT_ERROR_MESSAGE();
-                return NULL;
         }
 
         free(temp);
