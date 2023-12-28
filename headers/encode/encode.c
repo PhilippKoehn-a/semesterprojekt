@@ -154,13 +154,53 @@ char *floating_point(double number, int mantissa_pre_sign, int bits)
         {
                 *(encoding + 1 + i) = *(encoded_exponent + i);
         }
-
-        encoded_mantissa = fixed_point(mantissa, bits - mantissa_pre_sign + 1, bits - mantissa_pre_sign + 1);
-
-        for (i = 0; i < (int)strlen(encoded_mantissa); ++i)
+        if (bits == 8 && mantissa_pre_sign == 5)
         {
-                *(encoding + bits - mantissa_pre_sign + 1 + i) = *(encoded_mantissa + i);
+                if (number < MINIMUM_GK_5_8 || number > MAXIMUM_GK_5_8)
+                {
+                        OUT_OF_RANGE_ERROR_MESSAGE();
+                        return NULL;
+                }
+                encoded_mantissa = fixed_point(mantissa, 4, 4);
+                for (i = 0; i < 4; ++i)
+                {
+                        *(encoding + 4 + i) = *(encoded_mantissa + i);
+                }
         }
+        else if (bits == 16 && mantissa_pre_sign == 11)
+        {
+
+                if (number < MINIMUM_GK_11_16 || number > MAXIMUM_GK_11_16)
+                {
+                        OUT_OF_RANGE_ERROR_MESSAGE();
+                        return NULL;
+                }
+                encoded_mantissa = fixed_point(mantissa, 10, 10);
+
+                for (i = 0; i < 10; ++i)
+                {
+                        *(encoding + 6 + i) = *(encoded_mantissa + i);
+                }
+        }
+        else if (bits == 32 && mantissa_pre_sign == 24)
+        {
+                if (number < MINIMUM_GK_24_32 || number > MAXIMUM_GK_24_32)
+                {
+                        OUT_OF_RANGE_ERROR_MESSAGE();
+                        return NULL;
+                }
+                encoded_mantissa = fixed_point(mantissa, 23, 23);
+                for (i = 0; i < 23; ++i)
+                {
+                        *(encoding + 9 + i) = *(encoded_mantissa + i);
+                }
+        }
+        else
+        {
+                FALSE_VALUE_MESSAGE();
+                return NULL;
+        }
+
         free(encoded_mantissa);
         free(encoded_exponent);
         return encoding;
