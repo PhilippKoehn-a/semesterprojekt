@@ -7,95 +7,82 @@
 
 char *exzess_q(int number, int bits)
 {
-        int q;
-        char *p = initialize_bitfield();
-        char *a;
+        int q, i;
+        char *encoding = malloc(bits * sizeof(char));
 
-        if (p == NULL)
+        if (encoding == NULL)
         {
                 ALLOCATION_ERROR_MESSAGE();
                 return NULL;
         }
         q = pow(2, bits - 1) - 1;
         number = number + q;
-        decimal_into_binary(number, p);
-        a = get_pre_decimal_pure(p);
-        if ((int)strlen(a) - 2 > bits)
+        for (i = 0; i < bits; ++i)
         {
-                MISSING_BIT_ERROR_MESSAGE();
-                a = NULL;
-                return a;
-        }
-        free(p);
 
-        return a;
+                if ((int)number % 2 == 0 && (int)number == 0)
+                {
+                        *(encoding + bits - 1 - i) = '0';
+                        continue;
+                }
+                else if ((int)number % 2 == 0)
+                {
+                        *(encoding + bits - 1 - i) = '0';
+                        number = (int)number / 2;
+                        continue;
+                }
+                else if ((int)number % 2 == 1)
+                {
+                        *(encoding + bits - 1 - i) = '1';
+                        number = (int)number / 2;
+                        continue;
+                }
+        }
+
+        return encoding;
 }
 
 char *fixed_point(double number, int after_coma, int bits)
 {
+        char *a = malloc(bits * sizeof(char));
         int i;
-        char *p = initialize_bitfield();
-        char *a = malloc((bits + 1) * sizeof(char));
-        char *temp;
 
-        if (number < 0)
-        {
-                FALSE_VALUE_MESSAGE();
-                return NULL;
-        }
-
-        if (p == NULL || a == NULL)
+        if (a == NULL)
         {
                 ALLOCATION_ERROR_MESSAGE();
                 return NULL;
         }
-        number = pow(2, after_coma) * number;
-        if (number - floor(number) > 0.5)
+
+        number = number * pow(2, after_coma);
+        if (number - floor(number) >= 0.5)
         {
                 number = (int)number + 1;
         }
         else
         {
-                number = (int)number;
+                number = floor(number);
         }
-        decimal_into_binary(number, p);
-        temp = get_pre_decimal(p);
-        if (temp == NULL)
-        {
-                ALLOCATION_ERROR_MESSAGE();
-                return NULL;
-        }
-        for (i = 0; i <= bits; ++i)
-        {
-                if (*(temp + i) == '1' || *(temp + i) == '0')
-                {
-                        *(a + i) = *(temp + i);
-                }
-                else
-                {
-                        break;
-                }
-        }
-        for (i = 0; i < bits; ++i) /*re-sorting entries to eliminate pre-sign bit*/
-        {
-                *(a + i) = *(a + i + 1);
-        }
-        *(a + bits) = '\0';
         for (i = 0; i < bits; ++i)
         {
-                if (*(a + i) != '0' && *(a + i) != '1')
+
+                if ((int)number % 2 == 0 && (int)number == 0)
                 {
-                        *(a + i) = '0';
-                        for (i = 0; i < bits - 1; ++i) /*re-sorting entries if not all the bits were used */
-                        {
-                                *(a + bits - 1 - i) = *(a + bits - 2 - i);
-                        }
-                        *a = '0';
+                        *(a + bits - 1 - i) = '0';
+                        continue;
+                }
+                else if ((int)number % 2 == 0)
+                {
+                        *(a + bits - 1 - i) = '0';
+                        number = (int)number / 2;
+                        continue;
+                }
+                else if ((int)number % 2 == 1)
+                {
+                        *(a + bits - 1 - i) = '1';
+                        number = (int)number / 2;
+                        continue;
                 }
         }
-
-        free(temp);
-        free(p);
         return a;
 }
 
@@ -135,4 +122,46 @@ int standardize_floating_point(double number, double *mantissa)
         }
         }
         return 0;
+}
+char *floating_point(double number, int mantissa_pre_sign, int bits)
+{
+        char *encoding;
+        char *encoded_exponent;
+        char *encoded_mantissa;
+        double mantissa;
+        int exponent, i;
+        encoding = malloc(bits * sizeof(char));
+        if (encoding == NULL)
+        {
+                ALLOCATION_ERROR_MESSAGE();
+                return NULL;
+        }
+
+        if (number > 0)
+        {
+                *(encoding) = '0';
+        }
+        else
+        {
+                *(encoding) = '1';
+                number = number * -1;
+        }
+        exponent = standardize_floating_point(number, &mantissa);
+        mantissa = mantissa - 1;
+
+        encoded_exponent = exzess_q(exponent, bits - mantissa_pre_sign);
+        for (i = 0; i < bits - mantissa_pre_sign; ++i)
+        {
+                *(encoding + 1 + i) = *(encoded_exponent + i);
+        }
+
+        encoded_mantissa = fixed_point(mantissa, bits - mantissa_pre_sign + 1, bits - mantissa_pre_sign + 1);
+
+        for (i = 0; i < (int)strlen(encoded_mantissa); ++i)
+        {
+                *(encoding + bits - mantissa_pre_sign + 1 + i) = *(encoded_mantissa + i);
+        }
+        free(encoded_mantissa);
+        free(encoded_exponent);
+        return encoding;
 }

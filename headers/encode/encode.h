@@ -12,5 +12,7 @@ char *exzess_q(int number, int bits);
 char *fixed_point(double number, int after_coma, int bits);
 /*Standardizes a given floating point number. Saves the calculated mantissa value in the given double variable and returns the exponent.*/
 int standardize_floating_point(double number, double *mantissa);
+/*Calculates the floating point encoding of a given number with use of the given bits and mantissa digits. Returns a char pointer pointing at the resulting encoding. Returns NULL if the encoding was unsuccesfull.*/
+char *floating_point(double number, int mantissa_pre_sign, int bits);
 
 #endif
