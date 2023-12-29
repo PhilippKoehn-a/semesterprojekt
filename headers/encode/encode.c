@@ -1,4 +1,5 @@
 #include "encode.h"
+#include "decode.h"
 #include "bits.h"
 #include <math.h>
 #include <string.h>
@@ -111,7 +112,7 @@ int standardize_floating_point(double number, double *mantissa)
                 }
                 else
                 {
-                        while (number <= 1)
+                        while (number < 1)
                         {
                                 number = number * 2;
                                 --exponent;
@@ -204,4 +205,40 @@ char *floating_point(double number, int mantissa_pre_sign, int bits)
         free(encoded_mantissa);
         free(encoded_exponent);
         return encoding;
+}
+
+int calculate_exponent(double number)
+{
+        int exponent;
+        exponent = 0;
+        switch (number > 2)
+        {
+        case (1):
+        {
+                while (number >= 2)
+                {
+                        number = number / 2;
+                        ++exponent;
+                }
+                return exponent;
+        }
+        case (0):
+        {
+                if (number < 0)
+                {
+                        FALSE_VALUE_MESSAGE();
+                        return FALSE_VALUE;
+                }
+                else
+                {
+                        while (number < 1)
+                        {
+                                number = number * 2;
+                                --exponent;
+                        }
+                        return exponent;
+                }
+        }
+        }
+        return 0;
 }
