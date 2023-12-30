@@ -1,7 +1,4 @@
 #include "bits.h"
-#include "encode.h"
-#include "decode.h"
-#include "arithmetic.h"
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -286,6 +283,58 @@ char *add_bitfields(char *bitfield1, char *bitfield2)
                 {
 
                         if ((((int)*(bitfield1 + i) - 48) + ((int)*(bitfield2 + i) - 48) + ((int)*(result + i) - 48)) > 2)
+                        {
+                                if (i != 32)
+                                {
+                                        *(result + i - 1) = '1';
+                                }
+                                else
+                                {
+                                        *(result + i - 2) = '1';
+                                }
+                        }
+                        *(result + i) = '1';
+                }
+        }
+        return result;
+}
+
+char *sub_bitfields(char *bitfield1, char *bitfield2)
+{
+        int i;
+        char *result = initialize_bitfield();
+        if (result == NULL)
+        {
+                ALLOCATION_ERROR_MESSAGE();
+                return NULL;
+        }
+        clear_bitfield(result);
+
+        for (i = MAX_BINARY_LENGTH - 1; i >= 0; --i)
+        {
+                if (*(bitfield1 + i) == '.' || *(bitfield1 + i) == '\0')
+                {
+                        continue;
+                }
+                if ((((int)*(bitfield1 + i) - 48) - ((int)*(bitfield2 + i) - 48) - ((int)*(result + i) - 48)) % 2 == 0)
+                {
+                        if ((((int)*(bitfield1 + i) - 48) - ((int)*(bitfield2 + i) - 48) - ((int)*(result + i) - 48)) < 0)
+                        {
+                                if (i != 32)
+                                {
+                                        *(result + i - 1) = '1';
+                                }
+                                else
+                                {
+                                        *(result + i - 2) = '1';
+                                }
+                        }
+                        *(result + i) = '0';
+                }
+                else if ((((int)*(bitfield1 + i) - 48) - ((int)*(bitfield2 + i) - 48) - ((int)*(result + i) - 48)) % 2 == 1 || (((int)*(bitfield1 + i) - 48) - ((int)*(bitfield2 + i) - 48) - ((int)*(result + i) - 48)) % 2 == -1)
+                {
+
+                        if ((((int)*(bitfield1 + i) - 48) - ((int)*(bitfield2 + i) - 48) - ((int)*(result + i) - 48)) < 0)
                         {
                                 if (i != 32)
                                 {
