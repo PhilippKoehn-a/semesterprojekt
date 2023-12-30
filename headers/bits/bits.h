@@ -34,5 +34,9 @@ char *get_fraction(char *bitfield);
 char *get_pre_decimal(char *bitfield);
 /*Returns a pointer on a reserved memory in heap which contains the number from bitfield without fractions. Cuts off al the unused bitplaces in the bitfield. Does not respect the pre-sign bit.*/
 char *get_pre_decimal_pure(char *bitfield);
+/*Calculates the addition of two given bitfields. Returns the binary digit representing the addition of both bitfields.*/
+char *add_bitfields(char *bitfield1, char *bitfield2);
+/*Calculates the subtraction of two given bitfields. Returns the binary digit representing the subtraction of both bitfields.*/
+char *sub_bitfields(char *bitfield1, char *bitfield2);
 
 #endif
