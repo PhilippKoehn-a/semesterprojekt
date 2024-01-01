@@ -1,7 +1,8 @@
 #include "menu_util.h"
 #include "read_util.h"
 
-/*Optionen Hauptmenü*/
+/*Optionen Hauptmenü
+ggf. alternative Benutzerführung (keine Zahlen zulassen)*/
 int askOperationType()
 {
         int operationType;
