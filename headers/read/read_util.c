@@ -44,7 +44,8 @@ double read_decimalNumber(int FPAccuracy)
 }
 
 
-/*Lese binäres Bitmuster für Eingabefunktion und Arithmetik und konvertiere in double*/
+/*Lese binäres Bitmuster für Eingabefunktion und Arithmetik und konvertiere in double
+Aktuell 2K*/
 double read_BinaryPattern(int FPAccuracy)
 {
         char bitpattern[100];
