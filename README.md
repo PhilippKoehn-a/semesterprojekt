@@ -31,7 +31,6 @@ Fehlende Funktionen:
 
 Ggf. einfügen / ändern:
         - Rundungsfehler nach Codierung
-        - Menüführung über Buchstaben oder andere Kürzel (damit 0 zugelassen)
         . Kommentare / Funktionsbeschreibung so ausführlich wie Philipp
         - Definitionsbereiche als Konstanten festlegen
 

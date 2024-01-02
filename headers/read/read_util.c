@@ -1,22 +1,28 @@
 #include "read_util.h"
 
-/*Lese Benutzerauswahl (Menüführung)*/
-double read_zeropos_buff()
+/*Menüführung (Alphabetisch)*/
+double read_menuChoice()
 {
-        int x, status;
-        int c = '\0';
-        status = scanf ("%i", &x);
-        if (status == EOF) {
-                return BUFFER_ERROR;
+        char menuChoice[2];
+        int max_len = 2, i = 0;
+        char c = getchar();
+        while (c != '\n' && i < max_len - 1) {
+                menuChoice[i++] = c;
+                c = getchar();
         }
-        if (status == 0 || x < 0 || (c = getchar ()) != '\n') {
+        if (i == max_len - 1 && c != '\n') {
                 if (c == EOF || !flush_buff ()) {
                         return BUFFER_ERROR;
                 }
                 return INVALID_INPUT;
         }
-        return x;
+        menuChoice[i] = '\0';
+        if (menuChoice[0] != 'A' && menuChoice[0] != 'B' && menuChoice[0] != 'C' && menuChoice[0] != 'Q') {
+                return INVALID_INPUT;
+        }
+        return (double)menuChoice[0];
 }
+
 
 /*Lese Dezimalzahl für Eingabefunktion und Arithmetik*/
 double read_decimalNumber(int FPAccuracy)
@@ -38,7 +44,7 @@ double read_decimalNumber(int FPAccuracy)
         (ausserhalb des Definitionsbereichs der gewünschten Codierung)*/
         if (isValidNumber_encoding(decimal, FPAccuracy) == NOT_IN_RANGE) {
                 printf("Input can't be represented in desired accuracy. Going back to main menu ...\n\n");
-                return 0;
+                return BACK_TO_MAIN;
         }
         return decimal;
 }
@@ -48,8 +54,8 @@ double read_decimalNumber(int FPAccuracy)
 Aktuell 2K*/
 double read_BinaryPattern(int FPAccuracy)
 {
-        char bitpattern[100];
-        int max_len = 100, i = 0, dotCount = 0, length, integerPart = 0, dotPosition = -1;
+        char bitpattern[66];
+        int max_len = 65, i = 0, dotCount = 0, length, integerPart = 0, dotPosition = -1;
         double binary = 0.0, fractionPart = 0.0;
         char c = getchar();
         while (c != '\n' && i < max_len - 1) {
@@ -122,12 +128,10 @@ double read_BinaryPattern(int FPAccuracy)
         (ausserhalb des Definitionsbereichs der gewünschten Codierung)*/
         if (isValidNumber_encoding(binary, FPAccuracy) == NOT_IN_RANGE) {
                 printf("Input can't be represented in desired accuracy. Going back to main menu ...\n\n");
-                return 0;
+                return BACK_TO_MAIN;
         }
         return binary;
 }
-
-
 
 
 /*Definitionsbereich je Codierung*/
@@ -136,31 +140,29 @@ double isValidNumber_encoding(double inputNumber, int FPAccuracy)
         double lowerBound, upperBound;
 
         switch(FPAccuracy) {
-                case 1:
+                case 'A':
                         lowerBound = -2*pow(2, 3);
                         upperBound = 2*pow(2, 3);
                         break;
-                case 2:
+                case 'B':
                         lowerBound = -2*pow(2, 15);
                         upperBound = 2*pow(2, 15);
                         break;
-                case 3:
+                case 'C':
                         lowerBound = -2*pow(2, 127);
                         upperBound = 2*pow(2, 127);
                         break;
                 default:
-                        printf("Error: Invalid Accuracy input: %i (must be 1 / 2 / 3).\n\n", FPAccuracy);
+                        printf("Error: Invalid accuracy input: %i (selection must be A / B / C).\n\n", FPAccuracy);
                         return INVALID_INPUT;
         }
         if (inputNumber > lowerBound && inputNumber < upperBound) {
                 return inputNumber;
         } else {
-        /*Fehler wenn Defiitionsbereich überschritten*/        
+        /*Fehler wenn Definitionsbereich überschritten*/        
                 return NOT_IN_RANGE;
         }
 }
-
-
 
 
 /*Lese codiertes Bitmuster für Decodierung*/

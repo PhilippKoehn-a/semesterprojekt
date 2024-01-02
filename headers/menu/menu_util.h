@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 
-int askOperationType();
+#define BACK_TO_MAIN (DBL_MAX - 3.0)
+
+char askOperationType();
 int askinputFormat_encoding();
 int askFPAccuracy_encoding();
 void askNumber_encoding(double *number_encoding);

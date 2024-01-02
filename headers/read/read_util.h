@@ -11,8 +11,10 @@
 #define BUFFER_ERROR DBL_MAX
 #define INVALID_INPUT (DBL_MAX - 1.0)
 #define NOT_IN_RANGE (DBL_MAX - 2.0)
+#define BACK_TO_MAIN (DBL_MAX - 3.0)
 
-double read_zeropos_buff();
+
+double read_menuChoice();
 int flush_buff();
 double read_decimalNumber(int FPAccuracy);
 double read_BinaryPattern(int FPAccuracy);
