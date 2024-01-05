@@ -79,12 +79,6 @@ double decode_floating_point(char *encoding, int mantissa_pre_sign, int bits)
                 {
                         *(mantissa + 3 - i) = *(encoding + 7 - i);
                 }
-                printf("\nDie codierte  Mantisse: ");
-                for (i = 0; i < 4; ++i)
-                {
-                        printf("%c", *(mantissa + i));
-                }
-                printf("\n");
                 for (i = 0; i < 3; ++i)
                 {
                         *(exponent + 2 - i) = *(encoding + 3 - i);
@@ -93,10 +87,6 @@ double decode_floating_point(char *encoding, int mantissa_pre_sign, int bits)
                 decoded_exponent = decode_exzess_q(exponent, pow(2, bits - mantissa_pre_sign - 1) - 1);
                 decoded_mantissa = decoded_mantissa + 1;
                 decode = decoded_mantissa * pow(2, decoded_exponent);
-
-                printf("\nDas Vorzeichenbit: %c\n", *encoding);
-                printf("\nDer Exponent: %f\n", decoded_exponent);
-                printf("\nDie Mantisse: %f\n", decoded_mantissa);
 
                 if (*(encoding) == '1')
                 {
@@ -120,12 +110,7 @@ double decode_floating_point(char *encoding, int mantissa_pre_sign, int bits)
                 {
                         *(mantissa + 9 - i) = *(encoding + 15 - i);
                 }
-                printf("\nDie codierte  Mantisse: ");
-                for (i = 0; i < 10; ++i)
-                {
-                        printf("%c", *(mantissa + i));
-                }
-                printf("\n");
+
                 for (i = 0; i < 5; ++i)
                 {
                         *(exponent + 4 - i) = *(encoding + 5 - i);
@@ -134,10 +119,6 @@ double decode_floating_point(char *encoding, int mantissa_pre_sign, int bits)
                 decoded_exponent = decode_exzess_q(exponent, pow(2, bits - mantissa_pre_sign - 1) - 1);
                 decoded_mantissa = decoded_mantissa + 1;
                 decode = decoded_mantissa * pow(2, decoded_exponent);
-
-                printf("\nDas Vorzeichenbit: %c\n", *encoding);
-                printf("\nDer Exponent: %f\n", decoded_exponent);
-                printf("\nDie Mantisse: %f\n", decoded_mantissa);
 
                 if (*(encoding) == '1')
                 {
@@ -161,12 +142,7 @@ double decode_floating_point(char *encoding, int mantissa_pre_sign, int bits)
                 {
                         *(mantissa + 22 - i) = *(encoding + 31 - i);
                 }
-                printf("\nDie codierte  Mantisse: ");
-                for (i = 0; i < 23; ++i)
-                {
-                        printf("%c", *(mantissa + i));
-                }
-                printf("\n");
+
                 for (i = 0; i < 8; ++i)
                 {
                         *(exponent + 7 - i) = *(encoding + 8 - i);
@@ -175,10 +151,6 @@ double decode_floating_point(char *encoding, int mantissa_pre_sign, int bits)
                 decoded_exponent = decode_exzess_q(exponent, pow(2, bits - mantissa_pre_sign - 1) - 1);
                 decoded_mantissa = decoded_mantissa + 1;
                 decode = decoded_mantissa * pow(2, decoded_exponent);
-
-                printf("\nDas Vorzeichenbit: %c\n", *encoding);
-                printf("\nDer Exponent: %f\n", decoded_exponent);
-                printf("\nDie Mantisse: %f\n", decoded_mantissa);
 
                 if (*(encoding) == '1')
                 {
