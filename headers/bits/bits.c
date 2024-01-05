@@ -24,37 +24,72 @@ void clear_bitfield(char *bitfield)
 
 void decimal_into_binary(double number, char *bitfield)
 {
-        int bytes, i, whole_number;
+        int bytes, i, j, whole_number;
         double fraction;
 
         whole_number = (int)number;
         fraction = number - whole_number;
         bytes = sizeof(bitfield);
 
-        if (whole_number > pow(2, bytes * 8) - 1 || whole_number > INT_MAX || whole_number < 0)
+        if (whole_number > pow(2, bytes * 8) - 1 || whole_number < (pow(2, bytes * 8) - 1) * -1 || whole_number > INT_MAX || whole_number < INT_MIN)
         {
                 clear_bitfield(bitfield);
                 EXTENSION_ERROR_MESSAGE();
         }
-
-        for (i = 30; i >= 0; --i)
+        if (whole_number >= 0)
         {
-                if (whole_number % 2 == 0 && whole_number == 0)
+                for (i = 30; i >= 0; --i)
                 {
-                        *(bitfield + i) = '0';
-                        continue;
+                        if (whole_number % 2 == 0 && whole_number == 0)
+                        {
+                                *(bitfield + i) = '0';
+                                continue;
+                        }
+                        else if (whole_number % 2 == 0)
+                        {
+                                *(bitfield + i) = '0';
+                                whole_number = whole_number / 2;
+                                continue;
+                        }
+                        else if (whole_number % 2 == 1)
+                        {
+                                *(bitfield + i) = '1';
+                                whole_number = whole_number / 2;
+                                continue;
+                        }
                 }
-                else if (whole_number % 2 == 0)
+        }
+        else
+        {
+                fraction = fraction * -1;
+                for (i = 30; i >= 0; --i)
                 {
-                        *(bitfield + i) = '0';
-                        whole_number = whole_number / 2;
-                        continue;
+                        if ((pow(2, 30 - i) * -1) < (int)number && (pow(2, 30 - i - 1) * -1) >= (int)number)
+                        {
+                                *(bitfield + i) = '1';
+                                whole_number = fabs((pow(2, 30 - i) * -1) - whole_number);
+                                break;
+                        }
                 }
-                else if (whole_number % 2 == 1)
+                for (j = 30; j > i; --j)
                 {
-                        *(bitfield + i) = '1';
-                        whole_number = whole_number / 2;
-                        continue;
+                        if (whole_number % 2 == 0 && whole_number == 0)
+                        {
+                                *(bitfield + j) = '0';
+                                continue;
+                        }
+                        else if (whole_number % 2 == 0)
+                        {
+                                *(bitfield + j) = '0';
+                                whole_number = whole_number / 2;
+                                continue;
+                        }
+                        else if (whole_number % 2 == 1)
+                        {
+                                *(bitfield + j) = '1';
+                                whole_number = whole_number / 2;
+                                continue;
+                        }
                 }
         }
         for (i = 32; i < MAX_BINARY_LENGTH; ++i)

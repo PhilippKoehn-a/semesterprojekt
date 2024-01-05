@@ -20,7 +20,7 @@
 
 /*This function re-initializes a given bitfield with the binary represantation of 0.*/
 void clear_bitfield(char *bitfield);
-/*Converts a given decimal digit into a binary digit. The resulting binary digit will be written in the given bitfield*/
+/*Converts a given decimal digit into a binary digit. The resulting binary digit will be written in the given bitfield.Also possible to save negative binary-number which will be coded in 2K.*/
 void decimal_into_binary(double number, char *bitfield);
 /*Converts a given binary digit into a decimal digit and returns the decimal value.*/
 double binary_into_decimal(char *bitfield);
