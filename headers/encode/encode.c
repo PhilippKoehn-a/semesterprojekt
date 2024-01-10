@@ -107,8 +107,11 @@ int standardize_floating_point(double number, double *mantissa)
         {
                 if (number < 0)
                 {
-                        FALSE_VALUE_MESSAGE();
-                        return FALSE_VALUE;
+                        while (number < -2)
+                        {
+                                number = number / 2;
+                                ++exponent;
+                        }
                 }
                 else
                 {
