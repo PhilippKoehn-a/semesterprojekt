@@ -1,9 +1,11 @@
 #include "arithmetic.h"
 #include "encode.h"
+#include "decode.h"
 #include "bits.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <limits.h>
 
 double add_floating_point(double x, double y, int mantissa_pre_sign)
 {
@@ -17,6 +19,57 @@ double add_floating_point(double x, double y, int mantissa_pre_sign)
         {
                 INVALID_CALL();
                 return INVALID_CALL_ERROR;
+        }
+        if (mantissa_pre_sign == 5)
+        {
+                if (x + y > MAXIMUM_GK_5_8 || x + y < MINIMUM_GK_5_8)
+                {
+                        return INVALID_CALL_ERROR;
+                }
+        }
+        else if (mantissa_pre_sign == 11)
+        {
+                if (x + y > MAXIMUM_GK_11_16 || x + y < MINIMUM_GK_11_16)
+                {
+                        return INVALID_CALL_ERROR;
+                }
+        }
+        else
+        {
+                if (x + y > MAXIMUM_GK_24_32 || x + y < MINIMUM_GK_24_32)
+                {
+                        return INVALID_CALL_ERROR;
+                }
+        }
+
+        if (x > y && x < 0 && y > 0)
+        {
+                result = sub_floating_point(fabs(x), y, mantissa_pre_sign) * -1;
+                return result;
+        }
+
+        if (x > y && y < 0 && x > 0)
+        {
+                result = sub_floating_point(x, y * -1, mantissa_pre_sign);
+                return result;
+        }
+
+        if (y > x && x < 0 && y > 0)
+        {
+                result = sub_floating_point(y, x * -1, mantissa_pre_sign);
+                return result;
+        }
+
+        if (y > x && y < 0 && x > 0)
+        {
+                result = sub_floating_point(y * -1, x, mantissa_pre_sign) * -1;
+                return result;
+        }
+
+        if (y < 0 && x < 0)
+        {
+                result = add_floating_point(x * -1, y * -1, mantissa_pre_sign) * -1;
+                return result;
         }
 
         x_exponent = standardize_floating_point(x, &x);
@@ -83,6 +136,64 @@ double sub_floating_point(double x, double y, int mantissa_pre_sign)
         {
                 INVALID_CALL();
                 return INVALID_CALL_ERROR;
+        }
+
+        if (mantissa_pre_sign == 5)
+        {
+                if (x - y > MAXIMUM_GK_5_8 || x - y < MINIMUM_GK_5_8)
+                {
+                        return INVALID_CALL_ERROR;
+                }
+        }
+        else if (mantissa_pre_sign == 11)
+        {
+                if (x - y > MAXIMUM_GK_11_16 || x - y < MINIMUM_GK_11_16)
+                {
+                        return INVALID_CALL_ERROR;
+                }
+        }
+        else
+        {
+                if (x - y > MAXIMUM_GK_24_32 || x - y < MINIMUM_GK_24_32)
+                {
+                        return INVALID_CALL_ERROR;
+                }
+        }
+
+        if (x > y && x > 0 && y < 0)
+        {
+                result = add_floating_point(x, y * -1, mantissa_pre_sign);
+                return result;
+        }
+
+        if (x > y && x < 0 && y > 0)
+        {
+                result = add_floating_point(x * -1, y, mantissa_pre_sign) * -1;
+                return result;
+        }
+
+        if (x < 0 && y < 0 && x > y)
+        {
+                result = sub_floating_point(x * -1, y * -1, mantissa_pre_sign) * -1;
+                return result;
+        }
+
+        if (y > x && x > 0 && y < 0)
+        {
+                result = add_floating_point(x, y * -1, mantissa_pre_sign);
+                return result;
+        }
+
+        if (fabs(y) > fabs(x) && y > 0 && x < 0)
+        {
+                result = add_floating_point(x * -1, y, mantissa_pre_sign) * -1;
+                return result;
+        }
+
+        if (fabs(y) > fabs(x) && y < 0 && x < 0)
+        {
+                result = sub_floating_point(y * -1, x * -1, mantissa_pre_sign);
+                return result;
         }
 
         x_origin = x;
