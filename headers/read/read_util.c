@@ -44,7 +44,7 @@ double read_decimalNumber(int FPAccuracy)
         (ausserhalb des Definitionsbereichs der gewünschten Codierung)*/
         if (isValidNumber_encoding(decimal, FPAccuracy) == NOT_IN_RANGE) {
                 printf("Input can't be represented in desired accuracy. Going back to main menu ...\n\n");
-                return BACK_TO_MAIN;
+                decimal = BACK_TO_MAIN;
         }
         return decimal;
 }
