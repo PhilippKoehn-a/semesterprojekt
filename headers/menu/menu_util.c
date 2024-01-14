@@ -51,24 +51,34 @@ void askNumber_encoding(double *number_encoding)
                 printf("Please enter the number you want to code as a decimal.\n");
                 printf("Example: 1234.5678 (fixed point) _or_ 12.3e589 (floating).\n");
                 *number_encoding = read_decimalNumber(FPAccuracy);
+                if (*number_encoding == BACK_TO_MAIN) {
+                        return;
+                }
                 if (*number_encoding == BUFFER_ERROR) {
                         printf("Buffer Error. EOF. Going back to main menu...\n\n");
                         *number_encoding = BACK_TO_MAIN;
+                        return;
                 } else if (*number_encoding == INVALID_INPUT) {
                         printf("Invalid Input. Going back to main menu...\n\n");
                         *number_encoding = BACK_TO_MAIN;
+                        return;
                 }
         /*Eingabe reelle Zahl wenn in binärem Bitmuster - Achtung 2K!*/
         } else if (inputFormat_encoding == 'C') {
                 printf("Please enter the number you want to code as a 2K binary bit-pattern (max. 65 positions).\n");
                 printf("Example: '1111.11' for the 2K binary bit-pattern of -1.75.\n");
                 *number_encoding = read_BinaryPattern(FPAccuracy);
+                if (*number_encoding == BACK_TO_MAIN) {
+                        return;
+                }
                 if (*number_encoding == BUFFER_ERROR) {
                         printf("Buffer Error. EOF. Going back to main menu...\n\n");
                         *number_encoding = BACK_TO_MAIN;
+                        return;
                 } else if (*number_encoding == INVALID_INPUT) {
                         printf("Invalid Input. Going back to main menu...\n\n");
                         *number_encoding = BACK_TO_MAIN;
+                        return;
                 }              
         }
 }
@@ -192,6 +202,9 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                 printf("Please enter number 1 for your arithmetic as a decimal.\n");
                 printf("Example: 1234.5678 (fixed point) _or_ 12.3e589 (floating).\n");
                 *number1_arithmetic = read_decimalNumber(FPAccuracy);
+                if (*number1_arithmetic == BACK_TO_MAIN) {
+                        return;
+                }
                 if (*number1_arithmetic == BUFFER_ERROR) {
                         printf("Buffer Error. EOF. Going back to main menu...\n\n");
                         *number1_arithmetic = BACK_TO_MAIN;
@@ -204,6 +217,9 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                 printf("Please enter number 2 for your arithmetic as a decimal.\n");
                 printf("Example: 1234.5678 (fixed point) _or_ 12.3e589 (floating).\n");
                 *number2_arithmetic = read_decimalNumber(FPAccuracy);
+                if (*number2_arithmetic == BACK_TO_MAIN) {
+                        return;
+                }
                 if (*number2_arithmetic == BUFFER_ERROR) {
                         printf("Buffer Error. EOF. Going back to main menu...\n\n");
                         *number2_arithmetic = BACK_TO_MAIN;
@@ -217,6 +233,9 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                 printf("Please enter number 1 for your arithmetic as a 2K binary bit-pattern (max. 65 positions).\n");
                 printf("Example: '1111.11' for the 2K binary bit-pattern of -1.75.\n");
                 *number1_arithmetic = read_BinaryPattern(FPAccuracy);
+                if (*number1_arithmetic == BACK_TO_MAIN) {
+                        return;
+                }
                 if (*number1_arithmetic == BUFFER_ERROR) {
                         printf("Buffer Error. EOF. Going back to main menu...\n\n");
                         *number1_arithmetic = BACK_TO_MAIN;
@@ -229,6 +248,9 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                 printf("Please enter number2  for your arithmetic as a 2K binary bit-pattern (max. 65 positions).\n");
                 printf("Example: '1111.11' for the 2K binary bit-pattern of -1.75.\n");
                 *number2_arithmetic = read_BinaryPattern(FPAccuracy);
+                if (*number2_arithmetic == BACK_TO_MAIN) {
+                        return;
+                }
                 if (*number2_arithmetic == BUFFER_ERROR) {
                         printf("Buffer Error. EOF. Going back to main menu...\n\n");
                         *number2_arithmetic = BACK_TO_MAIN;
@@ -239,4 +261,55 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                         return;
                 }
         }
+}
+
+
+/*Abfrage Rechenoperation*/
+void askArithmeticOperation(double *arithmeticOperation)
+{
+        printf("Which arithmetic operation do you want to run?\n");
+        printf("\tEnter 'A' for addition.\n");
+        printf("\tEnter 'B' for subtraction.\n");
+        printf("\tEnter 'C' for multiplication.\n");
+        printf("\tEnter 'Q' to go back to main menu.\n\n");
+        *arithmeticOperation = read_menuChoice();
+        if (*arithmeticOperation == BUFFER_ERROR) {
+                printf("Buffer Error. EOF. Going back to main menu...\n\n");
+                *arithmeticOperation = BACK_TO_MAIN;
+                return;
+        }
+        else if (*arithmeticOperation == INVALID_INPUT) {
+                printf("Invalid Input. Going back to main menu...\n\n");
+                return;
+        }
+        else if (*arithmeticOperation == 'Q') {
+                printf("Going back to main menu ...\n\n");
+                *arithmeticOperation = BACK_TO_MAIN;
+                return;
+        } 
+}
+
+
+/*Abfrage Ausgabe*/
+void askOutputFormat(double *outputFormat)
+{
+        printf("How shall we represent the result?\n");
+        printf("\tEnter 'A' for the results only.\n");
+        printf("\tEnter 'B' for the calculations.\n");
+        printf("\tEnter 'Q' to go back to main menu.\n\n");
+        *outputFormat = read_menuChoice();
+        if (*outputFormat == BUFFER_ERROR) {
+                printf("Buffer Error. EOF. Going back to main menu...\n\n");
+                *outputFormat = BACK_TO_MAIN;
+                return;
+        }
+        else if (*outputFormat == INVALID_INPUT || *outputFormat == 'C') {
+                printf("Invalid Input. Going back to main menu...\n\n");
+                return;
+        }
+        else if (*outputFormat == 'Q') {
+                printf("Going back to main menu ...\n\n");
+                *outputFormat = BACK_TO_MAIN;
+                return;
+        } 
 }
