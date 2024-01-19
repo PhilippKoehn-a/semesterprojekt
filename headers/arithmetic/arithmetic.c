@@ -262,3 +262,45 @@ double sub_floating_point(double x, double y, int mantissa_pre_sign)
         free(subbed_binaries);
         return result;
 }
+
+double rounding_error_decimal(double x, double y, char operation, int mantissa_pre_sign)
+{
+        double delta;
+        if ((operation = !'+' && operation != '-') || (mantissa_pre_sign != 5 && mantissa_pre_sign != 11 && mantissa_pre_sign != 24))
+        {
+                INVALID_CALL();
+                return INVALID_CALL_ERROR;
+        }
+
+        if (operation == '+')
+        {
+                if (mantissa_pre_sign == 5)
+                {
+                        delta = fabs((add_floating_point(x, y, 5)) - (x + y));
+                }
+                if (mantissa_pre_sign == 11)
+                {
+                        delta = fabs((add_floating_point(x, y, 11)) - (x + y));
+                }
+                if (mantissa_pre_sign == 24)
+                {
+                        delta = fabs((add_floating_point(x, y, 24)) - (x + y));
+                }
+        }
+        else if (operation == '-')
+        {
+                if (mantissa_pre_sign == 5)
+                {
+                        delta = fabs((sub_floating_point(x, y, 5)) - (x - y));
+                }
+                if (mantissa_pre_sign == 11)
+                {
+                        delta = fabs((sub_floating_point(x, y, 11)) - (x - y));
+                }
+                if (mantissa_pre_sign == 24)
+                {
+                        delta = fabs((sub_floating_point(x, y, 24)) - (x - y));
+                }
+        }
+        return delta;
+}
