@@ -1,7 +1,5 @@
 #include "menu_util.h"
-#include "read_util.h"
 
-/*Optionen Hauptmenü*/
 char askOperationType()
 {
         double result;
@@ -25,14 +23,13 @@ char askOperationType()
 }
 
 
-/*Eingabefunktion Codierung*/
-void askNumber_encoding(double *number_encoding)
+void askNumber_encoding(double *number_encoding, int *FPAccuracy)
 {
-        int FPAccuracy, inputFormat_encoding;
+        int inputFormat_encoding;
         
         /*Frage nach gewünschter Codierungsgenauigkeit*/
-        FPAccuracy = askFPAccuracy_encoding();
-        if (FPAccuracy == 'Q') {
+        *FPAccuracy = askFPAccuracy_encoding();
+        if (*FPAccuracy == 'Q') {
                 printf("Going back to main menu ...\n\n");
                 *number_encoding = BACK_TO_MAIN;
                 return;
@@ -50,7 +47,7 @@ void askNumber_encoding(double *number_encoding)
         if (inputFormat_encoding == 'A' || inputFormat_encoding == 'B') {
                 printf("Please enter the number you want to code as a decimal.\n");
                 printf("Example: 1234.5678 (fixed point) _or_ 12.3e589 (floating).\n");
-                *number_encoding = read_decimalNumber(FPAccuracy);
+                *number_encoding = read_decimalNumber(*FPAccuracy);
                 if (*number_encoding == BACK_TO_MAIN) {
                         return;
                 }
@@ -67,7 +64,7 @@ void askNumber_encoding(double *number_encoding)
         } else if (inputFormat_encoding == 'C') {
                 printf("Please enter the number you want to code as a 2K binary bit-pattern (max. 65 positions).\n");
                 printf("Example: '1111.11' for the 2K binary bit-pattern of -1.75.\n");
-                *number_encoding = read_BinaryPattern(FPAccuracy);
+                *number_encoding = read_BinaryPattern(*FPAccuracy);
                 if (*number_encoding == BACK_TO_MAIN) {
                         return;
                 }
@@ -84,7 +81,6 @@ void askNumber_encoding(double *number_encoding)
 }
 
 
-/*Hilfsfunktion Codierungsgenauigkeit*/
 int askFPAccuracy_encoding()
 {
         int FPAccuracy;
@@ -105,7 +101,6 @@ int askFPAccuracy_encoding()
 }
 
 
-/*Hilfsfunktion Eingabeformat*/
 int askinputFormat_encoding()
 {
         int inputFormat_encoding;
@@ -127,17 +122,16 @@ int askinputFormat_encoding()
 }
 
 
-/*Eingabefunktion Decodierung*/
-void askPattern_decoding(char **patternToDecode)
+void askPattern_decoding(char **patternToDecode, int *FPAccuracy)
 {
-        int FPAccuracy = 0, bits = 0;
+        int bits = 0;
         /*Frage nach vorliegender Codierungsgenauigkeit*/
-        FPAccuracy = askFPAccuracy_decoding();
-        if (FPAccuracy == 'Q') {
+        *FPAccuracy = askFPAccuracy_decoding();
+        if (*FPAccuracy == 'Q') {
                 printf("Going back to main menu ...\n\n");
                 return;
         }
-        switch(FPAccuracy) {
+        switch(*FPAccuracy) {
                 case 'A':
                         bits = 8;
                         break;
@@ -148,7 +142,7 @@ void askPattern_decoding(char **patternToDecode)
                         bits = 32;
                         break;
                 default:
-                        printf("Error: Invalid accuracy input: %i (selection must be A / B / C).\n\n", FPAccuracy);
+                        printf("Error: Invalid accuracy input: %i (selection must be A / B / C).\n\n", *FPAccuracy);
                         return;
         }
         printf("Please enter the number you want to decode with %i bits.\n\n", bits);
@@ -156,7 +150,6 @@ void askPattern_decoding(char **patternToDecode)
 }
 
 
-/*Hilfsfunktion Codierungsgenauigkeit*/
 int askFPAccuracy_decoding()
 {
         int FPAccuracy;
@@ -177,13 +170,12 @@ int askFPAccuracy_decoding()
 }
 
 
-/*Eingabefunktion Arithmetik*/
-void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmetic)
+void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmetic, int *FPAccuracy)
 {
-        int FPAccuracy, inputFormat_encoding;
+        int inputFormat_encoding;
         
-        FPAccuracy = askFPAccuracy_encoding();
-        if (FPAccuracy == 'Q') {
+        *FPAccuracy = askFPAccuracy_encoding();
+        if (*FPAccuracy == 'Q') {
                 printf("Going back to main menu ...\n\n");
                 *number1_arithmetic = BACK_TO_MAIN;
                 *number2_arithmetic = BACK_TO_MAIN;
@@ -201,7 +193,7 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
         if (inputFormat_encoding == 'A' || inputFormat_encoding == 'B') {
                 printf("Please enter number 1 for your arithmetic as a decimal.\n");
                 printf("Example: 1234.5678 (fixed point) _or_ 12.3e589 (floating).\n");
-                *number1_arithmetic = read_decimalNumber(FPAccuracy);
+                *number1_arithmetic = read_decimalNumber(*FPAccuracy);
                 if (*number1_arithmetic == BACK_TO_MAIN) {
                         return;
                 }
@@ -216,7 +208,7 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                 }
                 printf("Please enter number 2 for your arithmetic as a decimal.\n");
                 printf("Example: 1234.5678 (fixed point) _or_ 12.3e589 (floating).\n");
-                *number2_arithmetic = read_decimalNumber(FPAccuracy);
+                *number2_arithmetic = read_decimalNumber(*FPAccuracy);
                 if (*number2_arithmetic == BACK_TO_MAIN) {
                         return;
                 }
@@ -232,7 +224,7 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
         } else {
                 printf("Please enter number 1 for your arithmetic as a 2K binary bit-pattern (max. 65 positions).\n");
                 printf("Example: '1111.11' for the 2K binary bit-pattern of -1.75.\n");
-                *number1_arithmetic = read_BinaryPattern(FPAccuracy);
+                *number1_arithmetic = read_BinaryPattern(*FPAccuracy);
                 if (*number1_arithmetic == BACK_TO_MAIN) {
                         return;
                 }
@@ -247,7 +239,7 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
                 }
                 printf("Please enter number2  for your arithmetic as a 2K binary bit-pattern (max. 65 positions).\n");
                 printf("Example: '1111.11' for the 2K binary bit-pattern of -1.75.\n");
-                *number2_arithmetic = read_BinaryPattern(FPAccuracy);
+                *number2_arithmetic = read_BinaryPattern(*FPAccuracy);
                 if (*number2_arithmetic == BACK_TO_MAIN) {
                         return;
                 }
@@ -264,7 +256,6 @@ void askNumbers_arithmetic(double *number1_arithmetic, double *number2_arithmeti
 }
 
 
-/*Abfrage Rechenoperation*/
 void askArithmeticOperation(double *arithmeticOperation)
 {
         printf("Which arithmetic operation do you want to run?\n");
@@ -285,31 +276,6 @@ void askArithmeticOperation(double *arithmeticOperation)
         else if (*arithmeticOperation == 'Q') {
                 printf("Going back to main menu ...\n\n");
                 *arithmeticOperation = BACK_TO_MAIN;
-                return;
-        } 
-}
-
-
-/*Abfrage Ausgabe*/
-void askOutputFormat(double *outputFormat)
-{
-        printf("How shall we represent the result?\n");
-        printf("\tEnter 'A' for the results only.\n");
-        printf("\tEnter 'B' for the calculations.\n");
-        printf("\tEnter 'Q' to go back to main menu.\n\n");
-        *outputFormat = read_menuChoice();
-        if (*outputFormat == BUFFER_ERROR) {
-                printf("Buffer Error. EOF. Going back to main menu...\n\n");
-                *outputFormat = BACK_TO_MAIN;
-                return;
-        }
-        else if (*outputFormat == INVALID_INPUT || *outputFormat == 'C') {
-                printf("Invalid Input. Going back to main menu...\n\n");
-                return;
-        }
-        else if (*outputFormat == 'Q') {
-                printf("Going back to main menu ...\n\n");
-                *outputFormat = BACK_TO_MAIN;
                 return;
         } 
 }

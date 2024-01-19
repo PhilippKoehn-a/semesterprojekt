@@ -1,6 +1,5 @@
 #include "read_util.h"
 
-/*Menüführung (Alphabetisch)*/
 double read_menuChoice()
 {
         char menuChoice[2];
@@ -24,7 +23,6 @@ double read_menuChoice()
 }
 
 
-/*Lese Dezimalzahl für Eingabefunktion und Arithmetik*/
 double read_decimalNumber(int FPAccuracy)
 {
         double decimal;
@@ -50,8 +48,6 @@ double read_decimalNumber(int FPAccuracy)
 }
 
 
-/*Lese binäres Bitmuster für Eingabefunktion und Arithmetik und konvertiere in double
-Aktuell 2K*/
 double read_BinaryPattern(int FPAccuracy)
 {
         char bitpattern[66];
@@ -134,7 +130,6 @@ double read_BinaryPattern(int FPAccuracy)
 }
 
 
-/*Definitionsbereich je Codierung*/
 double isValidNumber_encoding(double inputNumber, int FPAccuracy)
 {
         double lowerBound, upperBound;
@@ -165,7 +160,6 @@ double isValidNumber_encoding(double inputNumber, int FPAccuracy)
 }
 
 
-/*Lese codiertes Bitmuster für Decodierung*/
 char *read_patternToDecode(int bits)
 {
         char *patternToDecode = malloc((bits + 1) * sizeof(char));
@@ -203,10 +197,17 @@ char *read_patternToDecode(int bits)
 }
 
 
-/*Hilfsfunktion zum Puffer leeren*/
 int flush_buff()
 {
         int c;
         while ((c = getchar ()) != '\n' && c != EOF) {}
-        return c != EOF ;
+        return c != EOF;
+}
+
+
+void read_enter()
+{
+        char c;
+        printf("Press enter to proceed...\n\n");
+        while ((c = getchar ()) != '\n') {}
 }

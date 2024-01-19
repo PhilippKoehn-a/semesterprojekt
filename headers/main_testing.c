@@ -3,6 +3,7 @@
 
 #include "menu_util.h"
 #include "read_util.h"
+#include "print_util.h"
 
 int main(void)
 {
@@ -10,7 +11,12 @@ int main(void)
         char *patternToDecode = NULL; /*Bitmuster das an Philipp übergeben wird (Decodieren)*/
         int operationType = 0; /*Hauptmenü*/
         double arithmeticOperation; /*User-Wahl, welche Rechenoperation durchgeführt werden soll (an Philipp übergeben)*/
-        double outputFormat;
+        int FPAccuracy; /*kommt von STR*/
+        
+        /*Fiktive Rückgabewerte*/
+        char encoded_pattern[] = {'0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1'}; /*kommt von PKO*/
+        double decoded_number = 1.589655; /*kommt von PKO*/
+        double arithmetic_result = 987.123; /*kommt von PKO*/
         
         /*Endlosschleife - laeuft so lange nicht 0 uebergeben wird*/
         printf("======================================================================================\n");
@@ -30,36 +36,32 @@ int main(void)
                         return 0;                
                 /*Codieren*/
                 } else if (operationType == 'A') {
-                        askNumber_encoding(&number1);
+                        askNumber_encoding(&number1, &FPAccuracy);
                         if (number1 == BACK_TO_MAIN) {
                                 continue;
                         }
                         printf("Uebergebene Zahl (double) an Philipp: %f\n", number1);
-                        askOutputFormat(&outputFormat);
-                        if (outputFormat == BACK_TO_MAIN) {
+                        if (print_encoded(encoded_pattern, FPAccuracy) == BACK_TO_MAIN) {
                                 continue;
                         }
-                        printf("Gewuenschtes Output-Format (uebergeben an print-Funktionen): %c\n", (char)outputFormat);                        
                         return 0;
                 }
                 /*Decodieren*/
                 else if (operationType == 'B') {
-                        askPattern_decoding(&patternToDecode);
+                        askPattern_decoding(&patternToDecode, &FPAccuracy);
                         if (patternToDecode != NULL)
                         {
                                 printf("Uebergebenes Muster (char) an Philipp: %s\n", patternToDecode);
-                                free(patternToDecode); /*Speicherreservierung auflösen*/
-                                askOutputFormat(&outputFormat);
-                                if (outputFormat == BACK_TO_MAIN) {
+                                if (print_decoded(decoded_number, FPAccuracy, patternToDecode) == BACK_TO_MAIN) {
                                         continue;
                                 }
-                                printf("Gewuenschtes Output-Format (uebergeben an print-Funktion): %c\n", (char)outputFormat);                        
+                                free(patternToDecode); /*Speicherreservierung auflösen*/
                                 return 0;
                         }                        
                 }
                 /*Arithmetik*/
                 else if (operationType == 'C') {
-                        askNumbers_arithmetic(&number1, &number2);
+                        askNumbers_arithmetic(&number1, &number2, &FPAccuracy);
                         if (number1 == BACK_TO_MAIN || number2 == BACK_TO_MAIN) {
                                 continue;
                         }
@@ -70,11 +72,7 @@ int main(void)
                                 continue;
                         }
                         printf("Gewuenschte Arithmetik (uebergeben an Philipp): %c\n", (char)arithmeticOperation);
-                        askOutputFormat(&outputFormat);
-                        if (outputFormat == BACK_TO_MAIN) {
-                                continue;
-                        }
-                        printf("Gewuenschtes Output-Format (uebergeben an print-Funktion): %c\n", (char)outputFormat);                        
+                        print_arithmetic(arithmetic_result);
                         return 0;
                 }
         }
