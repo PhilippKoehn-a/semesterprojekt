@@ -17,6 +17,7 @@ int main(void)
         char encoded_pattern[] = {'0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1'}; /*kommt von PKO*/
         double decoded_number = 1.589655; /*kommt von PKO*/
         double arithmetic_result = 987.123; /*kommt von PKO*/
+        double rounding_error = 0.12; /*kommt von PKO*/
         
         /*Endlosschleife - laeuft so lange nicht 0 uebergeben wird*/
         printf("======================================================================================\n");
@@ -72,7 +73,9 @@ int main(void)
                                 continue;
                         }
                         printf("Gewuenschte Arithmetik (uebergeben an Philipp): %c\n", (char)arithmeticOperation);
-                        print_arithmetic(arithmetic_result);
+                        if (print_arithmetic(arithmetic_result, rounding_error) ==BACK_TO_MAIN) {
+                                continue;
+                        }
                         return 0;
                 }
         }

@@ -17,6 +17,11 @@
         "\t- k: affects the size of encoded decimal places\n"\
         "You will learn more about 'n' and 'k' in the following steps.\n");
 
+#define ROUNDINGERROR_MESSAGE() \
+        printf("As we consider real numbers there's an infinite amount of numbers between\n"\
+        "the largest positive and the smallest negative real number. But we only have a limited\n"\
+        "number of bits available. This is why the rounding error can occur.\n\n");
+
 #define STANDARDIZATION_MESSAGE() \
         printf("First your given number will be standardized to the format 'r = m*2^e':\n"\
         "\t- r is the real number standardized\n"\
@@ -73,17 +78,16 @@
         printf("To understand the arithmetic with encoded numbers,\n"\
         "firstly you should understand how the basic encoding works.\n"\
         "But no worries. In the next 10 minutes we'll teach you...\n\n");
-
+        
 
 #define ARITHMETIC_GOODBYE_MESSAGE() \
         printf("To understand the process more detailed, you can go back to the main menu.\n"\
         "There are many options available to learn more about the relation between\n"\
         "accuracy and encoding.\n\n");
 
-
 double print_encoded(char encoded_pattern[], int FPAccuracy);
 double print_decoded(double decoded_number, int FPAccuracy, char patternToDecode[]);
-double print_arithmetic(double arithmetic_result);
+double print_arithmetic(double arithmetic_result, double rounding_error);
 
 
 

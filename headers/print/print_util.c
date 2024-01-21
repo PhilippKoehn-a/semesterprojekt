@@ -317,11 +317,12 @@ double print_decoded(double decoded_number, int FPAccuracy, char patternToDecode
 }
 
 
-double print_arithmetic(double arithmetic_result)
+double print_arithmetic(double arithmetic_result, double rounding_error)
 {
         double details = 0;
         printf("The result of your desired arithmetic operation is: %f\n", arithmetic_result);
-        printf("Please note: It is the result considering the given encoding and desired accuracy.\n");
+        printf("The rounding error is: %f\n", rounding_error);
+        printf("Please note: This is the result considering the given encoding and desired accuracy.\n");
         printf("The accuracy depends on the bits used for the arithmetic.\n");
         printf("Do you want more information?\n");
         printf("\tEnter 'A' for more information.\n");
@@ -340,6 +341,8 @@ double print_arithmetic(double arithmetic_result)
                 ARITHMETIC_WELCOME_MESSAGE();
                 read_enter();
                 ACCURACY_MESSAGE();
+                read_enter();
+                ROUNDINGERROR_MESSAGE();
                 read_enter();
                 STANDARDIZATION_MESSAGE();
                 read_enter();
@@ -365,10 +368,11 @@ double print_arithmetic(double arithmetic_result)
                 return BACK_TO_MAIN;
         } else if (details == 'Q') {
                 printf("Going back to main menu...\n\n");
+                return BACK_TO_MAIN;
         } else if (details == 'A') {
                 printf("Exiting the program ...\n\n");
                 return 0;
         }
-        printf("Exiting program.\n");
+        printf("Exiting program after arithmetic.\n");
         return 0;
 }
