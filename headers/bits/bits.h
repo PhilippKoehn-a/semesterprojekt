@@ -1,11 +1,9 @@
 #ifndef BITS_H_INCLUDED
 #define BITS_H_INCLUDED
 
-#define ALLOCATION_ERROR -99
 #define EPSILON 0.0000001
 #define EXTENSION_ERROR -10
 #define GENERAL_ERROR -9999
-#define INVALID_INPUT -5
 #define MAX_BINARY_LENGTH 64
 
 #define ALLOCATION_ERROR_MESSAGE() printf("Fehlercode: -99\n");

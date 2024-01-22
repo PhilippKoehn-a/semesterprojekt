@@ -4,6 +4,11 @@
 #include "menu_util.h"
 #include "read_util.h"
 #include "print_util.h"
+#include "arithmetic.h"
+#include "bits.h"
+#include "decode.h"
+#include "encode.h"
+
 
 int main(void)
 {
@@ -11,13 +16,15 @@ int main(void)
         char *patternToDecode = NULL; /*Bitmuster das an Philipp übergeben wird (Decodieren)*/
         int operationType = 0; /*Hauptmenü*/
         double arithmeticOperation; /*User-Wahl, welche Rechenoperation durchgeführt werden soll (an Philipp übergeben)*/
-        int FPAccuracy; /*kommt von STR*/
+        int FPAccuracy;
+        int mantissa_pre_sign;
+        int bits;
         
         /*Fiktive Rückgabewerte*/
-        char encoded_pattern[] = {'0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1', '0', '0', '1', '1', '1', '0', '0', '1'}; /*kommt von PKO*/
-        double decoded_number = 1.589655; /*kommt von PKO*/
-        double arithmetic_result = 987.123; /*kommt von PKO*/
-        double rounding_error = 0.12; /*kommt von PKO*/
+        char *encoded_pattern;
+        double decoded_number;
+        double arithmetic_result;
+        double rounding_error;
         
         /*Endlosschleife - laeuft so lange nicht 0 uebergeben wird*/
         printf("======================================================================================\n");
@@ -41,7 +48,17 @@ int main(void)
                         if (number1 == BACK_TO_MAIN) {
                                 continue;
                         }
-                        printf("Uebergebene Zahl (double) an Philipp: %f\n", number1);
+                        if (FPAccuracy == 'A') {
+                                mantissa_pre_sign = 5;
+                                bits = 8;
+                        } else if (FPAccuracy == 'B') {
+                                mantissa_pre_sign = 11;
+                                bits = 16;
+                        } else if (FPAccuracy == 'C') {
+                                mantissa_pre_sign = 24;
+                                bits = 32;
+                        }
+                        encoded_pattern = floating_point(number1, mantissa_pre_sign, bits);
                         if (print_encoded(encoded_pattern, FPAccuracy) == BACK_TO_MAIN) {
                                 continue;
                         }
@@ -52,7 +69,20 @@ int main(void)
                         askPattern_decoding(&patternToDecode, &FPAccuracy);
                         if (patternToDecode != NULL)
                         {
-                                printf("Uebergebenes Muster (char) an Philipp: %s\n", patternToDecode);
+                                if (number1 == BACK_TO_MAIN) {
+                                        continue;
+                                }
+                                if (FPAccuracy == 'A') {
+                                        mantissa_pre_sign = 5;
+                                        bits = 8;
+                                } else if (FPAccuracy == 'B') {
+                                        mantissa_pre_sign = 11;
+                                        bits = 16;
+                                } else if (FPAccuracy == 'C') {
+                                        mantissa_pre_sign = 24;
+                                        bits = 32;
+                                }
+                                decoded_number = decode_floating_point(patternToDecode, mantissa_pre_sign, bits);
                                 if (print_decoded(decoded_number, FPAccuracy, patternToDecode) == BACK_TO_MAIN) {
                                         continue;
                                 }
@@ -66,13 +96,30 @@ int main(void)
                         if (number1 == BACK_TO_MAIN || number2 == BACK_TO_MAIN) {
                                 continue;
                         }
-                        printf("Uebergebene Zahl 1 (double) an Philipp fuer Arithmetik: %f\n", number1);
-                        printf("Uebergebene Zahl 2 (double) an Philipp fuer Arithmetik: %f\n", number2);
+                        if (FPAccuracy == 'A') {
+                                mantissa_pre_sign = 5;
+                                bits = 8;
+                        } else if (FPAccuracy == 'B') {
+                                mantissa_pre_sign = 11;
+                                bits = 16;
+                        } else if (FPAccuracy == 'C') {
+                                mantissa_pre_sign = 24;
+                                bits = 32;
+                        }                        
+                        
+                        
                         askArithmeticOperation(&arithmeticOperation);
                         if (arithmeticOperation == BACK_TO_MAIN) {
                                 continue;
                         }
-                        printf("Gewuenschte Arithmetik (uebergeben an Philipp): %c\n", (char)arithmeticOperation);
+                        if (arithmeticOperation =='A') {
+                                arithmetic_result = add_floating_point(number1, number2, mantissa_pre_sign);
+                                rounding_error = rounding_error_decimal(number1, number2, '+', mantissa_pre_sign);
+
+                        } else if (arithmeticOperation == 'B') {
+                                arithmetic_result = sub_floating_point(number1, number2, mantissa_pre_sign);
+                                rounding_error = rounding_error_decimal(number1, number2, '-', mantissa_pre_sign);
+                        }
                         if (print_arithmetic(arithmetic_result, rounding_error) ==BACK_TO_MAIN) {
                                 continue;
                         }
