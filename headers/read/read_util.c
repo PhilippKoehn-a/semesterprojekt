@@ -86,7 +86,7 @@ double read_BinaryPattern(int FPAccuracy)
                         dotPosition = i;
                 }
         }
-        /*Konvertierein double, wenn Komma gefunden*/
+        /*Konvertiere in double, wenn Komma gefunden*/
         if (dotPosition != -1) {
                 /*Berücksichtige Vorzeichen in 2K-Codierung*/
                 if (bitpattern[0] == '1') {

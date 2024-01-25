@@ -261,7 +261,6 @@ void askArithmeticOperation(double *arithmeticOperation)
         printf("Which arithmetic operation do you want to run?\n");
         printf("\tEnter 'A' for addition.\n");
         printf("\tEnter 'B' for subtraction.\n");
-        printf("\tEnter 'C' for multiplication.\n");
         printf("\tEnter 'Q' to go back to main menu.\n\n");
         *arithmeticOperation = read_menuChoice();
         if (*arithmeticOperation == BUFFER_ERROR) {
@@ -269,7 +268,7 @@ void askArithmeticOperation(double *arithmeticOperation)
                 *arithmeticOperation = BACK_TO_MAIN;
                 return;
         }
-        else if (*arithmeticOperation == INVALID_INPUT) {
+        else if (*arithmeticOperation == INVALID_INPUT || *arithmeticOperation == 'C') {
                 printf("Invalid Input. Going back to main menu...\n\n");
                 return;
         }
